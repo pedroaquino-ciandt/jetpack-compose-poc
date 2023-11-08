@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
+    <string name="sign_in">Sign In</string>
+    <string name="username_name">Username</string>
+    <string name="password_name">Password</string>
+    <string name="login">Login</string>
+</resources>
