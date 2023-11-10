@@ -1,39 +1,29 @@
 package com.example.myapplication
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,74 +77,31 @@ fun OnboardingScreen(
     ) {
         Text("Welcome to the Basics Codelab!")
         Button(
-            modifier = Modifier.padding(vertical = 24.dp), onClick = onContinueClicked
+            modifier = Modifier
+                .padding(vertical = 24.dp)
+                .testTag(stringResource(id = R.string.continue_button)),
+            onClick = onContinueClicked
         ) {
             Text("Continue")
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
-    onLoginClicked: () -> Unit,
-    modifier: Modifier = Modifier
+fun Greetings(
+    modifier: Modifier = Modifier, names: List<String> = List(1000) { "$it" }
 ) {
-    var userName by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-
-    Column(
-        modifier = modifier
-            .padding(16.dp, 16.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Center,
-    ) {
-
+    Column {
         Text(
-            text = stringResource(id = R.string.sign_in),
+            text = stringResource(id = R.string.greetings),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.displaySmall,
             modifier = modifier.align(Alignment.CenterHorizontally)
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            modifier = modifier.fillMaxWidth(),
-            value = userName,
-            onValueChange = { userName = it },
-            placeholder = { Text(text = stringResource(id = R.string.username_name)) },
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            modifier = modifier.fillMaxWidth(),
-            value = password,
-            onValueChange = { password = it },
-            placeholder = { Text(text = stringResource(id = R.string.password_name)) },
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .align(Alignment.CenterHorizontally),
-            onClick = { /*TODO*/ }) {
-            Text(
-                text = stringResource(id = R.string.login),
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-    }
-}
-
-@Composable
-private fun Greetings(
-    modifier: Modifier = Modifier, names: List<String> = List(1000) { "$it" }
-) {
-    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
-        items(items = names) { name ->
-            Greeting(name = name)
+        LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+            items(items = names) { name ->
+                Greeting(name = name)
+            }
         }
     }
 }
@@ -195,9 +143,8 @@ private fun CardContent(name: String) {
             )
             if (expanded) {
                 Text(
-                    text = ("Composem ipsum color sit lazy, " + "padding theme elit, sed do bouncy. ").repeat(
-                        4
-                    ),
+                    text = ("Composem ipsum color sit lazy, "),
+                    modifier = Modifier.testTag(stringResource(id = R.string.greeting_description))
                 )
             }
         }
@@ -217,13 +164,13 @@ private fun CardContent(name: String) {
 //@Preview(
 //    showBackground = true, widthDp = 320, uiMode = UI_MODE_NIGHT_YES, name = "DefaultPreviewDark"
 //)
-//@Preview(showBackground = true, widthDp = 320)
-//@Composable
-//fun DefaultPreview() {
-//    MyApplicationTheme {
-//        Greetings()
-//    }
-//}
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+fun DefaultPreview() {
+    MyApplicationTheme {
+        Greetings()
+    }
+}
 //
 //@Preview(showBackground = true, widthDp = 320, heightDp = 320)
 //@Composable
@@ -233,13 +180,6 @@ private fun CardContent(name: String) {
 //    }
 //}
 
-@Preview(showBackground = true, widthDp = 320, heightDp = 500)
-@Composable
-fun LoginPreview() {
-    MyApplicationTheme {
-        LoginScreen(onLoginClicked = {})
-    }
-}
 
 //@Preview
 //@Composable
@@ -250,3 +190,37 @@ fun LoginPreview() {
 //        }
 //    }
 //}
+
+@FontScalePreviews
+@MultipleScreens
+@Composable
+fun LoginPreview() {
+    MyApplicationTheme {
+        LoginScreen(onLoginClicked = {})
+    }
+}
+
+@Preview(
+    name = "small font",
+    group = "font scales",
+    fontScale = 0.5f
+)
+@Preview(
+    name = "large font",
+    group = "font scales",
+    fontScale = 1.5f
+)
+annotation class FontScalePreviews
+
+
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 500
+)
+@Preview(
+    showBackground = true,
+    widthDp = 500,
+    heightDp = 700
+)
+annotation class MultipleScreens
