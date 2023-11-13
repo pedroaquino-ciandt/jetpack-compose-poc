@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onFirst
@@ -31,7 +32,7 @@ class MyApplicationTest {
     }
 
     @Test
-    fun should_display_continue_button_WHEN_app_is_loaded_GIVEN_onboarding_page() {
+    fun should_display_continue_button_when_app_is_loaded_given_onboarding_page() {
         rule.setContent { MyApp() }
         rule.onNode(hasTestTag(continueButton)).assertIsDisplayed()
     }
@@ -90,5 +91,14 @@ class MyApplicationTest {
         rule.onAllNodesWithContentDescription("Show more").onFirst().performClick()
         rule.onAllNodesWithContentDescription("Show less").onFirst().performClick()
         rule.onNode(hasTestTag(greetingDescription)).assertDoesNotExist()
+    }
+
+    @Test
+    fun shouldDisplayErrorMessageWhenStateIsRestoredGivenSignInPage() {
+        val restorationTester = StateRestorationTester(rule)
+        restorationTester.setContent { LoginScreen({}) }
+        rule.onNodeWithText("Login").performClick()
+        restorationTester.emulateSavedInstanceStateRestore()
+        rule.onNodeWithText("Enter an username \nEnter a password").assertIsDisplayed()
     }
 }
