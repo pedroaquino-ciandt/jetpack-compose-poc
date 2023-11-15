@@ -161,9 +161,6 @@ private fun CardContent(name: String) {
     }
 }
 
-//@Preview(
-//    showBackground = true, widthDp = 320, uiMode = UI_MODE_NIGHT_YES, name = "DefaultPreviewDark"
-//)
 @Preview(showBackground = true, widthDp = 320)
 @Composable
 fun DefaultPreview() {
@@ -171,25 +168,25 @@ fun DefaultPreview() {
         Greetings()
     }
 }
-//
-//@Preview(showBackground = true, widthDp = 320, heightDp = 320)
-//@Composable
-//fun OnboardingPreview() {
-//    MyApplicationTheme {
-//        OnboardingScreen(onContinueClicked = {})
-//    }
-//}
+
+@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+@Composable
+fun OnboardingPreview() {
+    MyApplicationTheme {
+        OnboardingScreen(onContinueClicked = {})
+    }
+}
 
 
-//@Preview
-//@Composable
-//fun MyAppPreview() {
-//    MyApplicationTheme {
-//        MyApplicationTheme {
-//            MyApp(Modifier.fillMaxSize())
-//        }
-//    }
-//}
+@Preview
+@Composable
+fun MyAppPreview() {
+    MyApplicationTheme {
+        MyApplicationTheme {
+            MyApp(Modifier.fillMaxSize())
+        }
+    }
+}
 
 @FontScalePreviews
 @MultipleScreens

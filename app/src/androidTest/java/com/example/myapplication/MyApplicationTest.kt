@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MyApplicationTest {
     @get:Rule
-    val rule = createAndroidComposeRule<ComponentActivity>()
+    var rule = createAndroidComposeRule<ComponentActivity>()
     private var continueButton = String()
     private var greetingDescription = String()
 
@@ -32,49 +32,64 @@ class MyApplicationTest {
     }
 
     @Test
-    fun should_display_continue_button_when_app_is_loaded_given_onboarding_page() {
+    fun shouldDisplayContinueButton_WhenAppIsLoaded_GivenOnboardingPage() {
         rule.setContent { MyApp() }
         rule.onNode(hasTestTag(continueButton)).assertIsDisplayed()
     }
     @Test
-    fun shouldDisplaySignInWhenContinueButtonIsClickedGivenOnboardingScreen() {
+    fun shouldDisplaySignIn_WhenContinueButtonIsClicked_GivenOnboardingScreen() {
+        //Arrange
         rule.setContent { MyApp() }
+
+        //Act
         rule.onNode(hasTestTag(continueButton)).performClick()
+
+        //Assert
         rule.onNodeWithText("Sign In").assertIsDisplayed()
     }
     @Test
-    fun shouldDisplayGreetingsWhenLoginIsCompleteGivenValidUser() {
+    fun shouldDisplayGreetings_WhenLoginIsComplete_GivenValidUser() {
         rule.setContent { MyApp() }
+
         rule.onNode(hasTestTag(continueButton)).performClick()
         rule.onNodeWithText("Username").performTextInput("testUser")
         rule.onNodeWithText("Password").performTextInput("password")
         rule.onNodeWithText("Login").performClick()
+
         rule.onNodeWithText("Greetings").assertIsDisplayed()
     }
     @Test
-    fun shouldShowErrorWhenWhenUserNameIsEmptyGivenLoginScreen() {
+    fun shouldShowError_WhenUserNameIsEmpty_GivenLoginScreen() {
         rule.setContent { LoginScreen({}) }
+
         rule.onNodeWithText("Username").performTextInput("testUser")
         rule.onNodeWithText("Login").performClick()
+
         rule.onNodeWithText("Enter a password").assertIsDisplayed()
     }
     @Test
-    fun shouldShowErrorWhenWhenPasswordIsEmptyGivenLoginScreen() {
+    fun shouldShowError_WhenPasswordIsEmpty_GivenLoginScreen() {
         rule.setContent { LoginScreen({}) }
+
         rule.onNodeWithText("Password").performTextInput("password")
         rule.onNodeWithText("Login").performClick()
+
         rule.onNodeWithText("Enter an username").assertIsEnabled()
     }
     @Test
-    fun shouldShowErrorWhenWhenPasswordAndUsernameAreEmptyGivenLoginScreen() {
+    fun shouldShowError_WhenPasswordAndUsernameAreEmpty_GivenLoginScreen() {
         rule.setContent { LoginScreen({}) }
+
         rule.onNodeWithText("Login").performClick()
+
         rule.onNodeWithText("Enter an username \nEnter a password").assertIsDisplayed()
     }
     @Test
-    fun shouldDisplayGreetingsDescriptionWhenGreetingsDescriptionIsEnabledGivenGreetingsPage() {
+    fun shouldDisplayGreetingsDescription_WhenGreetingsDescriptionIsEnabled_GivenGreetingsPage() {
         rule.setContent { Greetings() }
+
         rule.onAllNodesWithContentDescription("Show more").onFirst().performClick()
+
         rule.onNode(hasTestTag(greetingDescription))
             .assertIsDisplayed()
             .assertTextContains("Composem ipsum color sit lazy, ")
@@ -82,14 +97,17 @@ class MyApplicationTest {
     @Test
     fun shouldNotDisplayGreetingsDescriptionWhenGreetingsDescriptionIsNotEnabledGivenGreetingsPage() {
         rule.setContent { Greetings() }
+
         rule.onNode(hasTestTag(greetingDescription)).assertDoesNotExist()
     }
 
     @Test
     fun shouldNotDisplayGreetingsDescriptionWhenGreetingsDescriptionIsDisabledGivenGreetingsPage() {
         rule.setContent { Greetings() }
+
         rule.onAllNodesWithContentDescription("Show more").onFirst().performClick()
         rule.onAllNodesWithContentDescription("Show less").onFirst().performClick()
+
         rule.onNode(hasTestTag(greetingDescription)).assertDoesNotExist()
     }
 
@@ -97,8 +115,10 @@ class MyApplicationTest {
     fun shouldDisplayErrorMessageWhenStateIsRestoredGivenSignInPage() {
         val restorationTester = StateRestorationTester(rule)
         restorationTester.setContent { LoginScreen({}) }
+
         rule.onNodeWithText("Login").performClick()
         restorationTester.emulateSavedInstanceStateRestore()
+
         rule.onNodeWithText("Enter an username \nEnter a password").assertIsDisplayed()
     }
 }
