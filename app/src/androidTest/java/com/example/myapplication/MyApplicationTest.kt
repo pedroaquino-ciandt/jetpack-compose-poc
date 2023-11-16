@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertPositionInRootIsEqualTo
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertWidthIsAtLeast
 import androidx.compose.ui.test.hasTestTag
@@ -38,11 +39,13 @@ class MyApplicationTest {
     @Test
     fun shouldDisplayContinueButton_WhenAppIsLoaded_GivenOnboardingPage() {
         rule.setContent { MyApp() }
+
         rule.onNode(hasTestTag(continueButton))
             .assertIsDisplayed()
             .assertHeightIsEqualTo(40.dp)
             .assertHasClickAction()
             .assertWidthIsAtLeast(105.dp)
+            .assertPositionInRootIsEqualTo(144.dp, 369.dp)
     }
     @Test
     fun shouldDisplaySignIn_WhenContinueButtonIsClicked_GivenOnboardingScreen() {
