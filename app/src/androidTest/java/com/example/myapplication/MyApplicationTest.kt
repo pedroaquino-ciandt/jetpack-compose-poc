@@ -1,9 +1,12 @@
 package com.example.myapplication
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.assertWidthIsAtLeast
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -12,6 +15,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
 import org.junit.Rule
@@ -34,7 +38,11 @@ class MyApplicationTest {
     @Test
     fun shouldDisplayContinueButton_WhenAppIsLoaded_GivenOnboardingPage() {
         rule.setContent { MyApp() }
-        rule.onNode(hasTestTag(continueButton)).assertIsDisplayed()
+        rule.onNode(hasTestTag(continueButton))
+            .assertIsDisplayed()
+            .assertHeightIsEqualTo(40.dp)
+            .assertHasClickAction()
+            .assertWidthIsAtLeast(105.dp)
     }
     @Test
     fun shouldDisplaySignIn_WhenContinueButtonIsClicked_GivenOnboardingScreen() {
