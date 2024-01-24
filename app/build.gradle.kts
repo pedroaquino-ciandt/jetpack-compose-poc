@@ -42,7 +42,9 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/*"
         }
+
     }
 }
 
@@ -64,4 +66,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.compose.material:material-icons-extended")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.7.2")
+    implementation ("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 }

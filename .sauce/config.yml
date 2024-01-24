@@ -1,0 +1,22 @@
+apiVersion: v1alpha
+kind: espresso
+defaults: {}
+showConsoleLog: false
+sauce:
+  region: us-west-1
+  concurrency: 50
+espresso:
+  app: app-debug.apk
+  testApp: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+suites:
+- name: espresso - Google Pixel .* - Android GoogleAPI Emulator
+  emulators:
+  - name: Android GoogleAPI Emulator
+    platformVersions:
+    - "11.0"
+artifacts:
+  download:
+    match:
+    - '*'
+    when: always
+    directory: artifacts
